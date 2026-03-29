@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelAI - SaaS Fraud Detection Platform</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Abstract Backgrounds -->
+    <div class="bg-orb orb-primary"></div>
+    <div class="bg-orb orb-secondary"></div>
+
+    <!-- Auth Overlay (Simulated Login) -->
+    <div id="auth-overlay" class="auth-overlay">
+        <div class="glass-panel auth-card">
+            <div class="auth-header">
+                <i class="fa-solid fa-microchip icon-logo"></i>
+                <h2>Sentinel<span class="text-neon">AI</span></h2>
+                <p>Advanced Fraud Detection API</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-icon-wrap">
+                        <i class="fa-regular fa-envelope"></i>
+                        <input type="email" placeholder="admin@sentinel.ai" required value="admin@sentinel.ai">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-icon-wrap">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" placeholder="••••••••" required value="startup2026">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary w-100 mt-2">
+                    Initialize System <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main SaaS Application -->
+    <div id="app-container" class="app-container hidden">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-brand">
+                <i class="fa-solid fa-microchip text-neon"></i>
+                <span>Sentinel<span class="text-neon">AI</span></span>
+            </div>
+            
+            <div class="sidebar-menu">
+                <p class="menu-label">CORE</p>
+                <a href="#dashboard" class="menu-item active" data-view="dashboard">
+                    <i class="fa-solid fa-chart-pie"></i> Dashboard
+                </a>
+                <a href="#scanner" class="menu-item" data-view="scanner">
+                    <i class="fa-solid fa-radar"></i> ML Scanner
+                </a>
+                
+                <p class="menu-label mt-4">DEVELOPER</p>
+                <a href="#api" class="menu-item" data-view="api">
+                    <i class="fa-solid fa-code"></i> API Access <span class="badge badge-pro">PRO</span>
+                </a>
+                <a href="#logs" class="menu-item" data-view="logs">
+                    <i class="fa-solid fa-server"></i> Webhooks
+                </a>
+                
+                <p class="menu-label mt-4">ACCOUNT</p>
+                <a href="#billing" class="menu-item" data-view="billing">
+                    <i class="fa-solid fa-credit-card"></i> Subscription
+                </a>
+                <a href="#settings" class="menu-item" data-view="settings">
+                    <i class="fa-solid fa-gear"></i> Settings
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">AN</div>
+                    <div class="user-info">
+                        <span class="user-name">Aniket Sir</span>
+                        <span class="user-plan">Enterprise Plan</span>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logout-btn" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Topbar -->
+            <header class="topbar glass-panel">
+                <div class="search-bar">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Search transactions, API keys, rules...">
+                </div>
+                <div class="topbar-actions">
+                    <button class="icon-btn position-relative" title="Alerts">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <button class="btn-secondary btn-sm" id="live-status">
+                        <span class="dot green-dot"></span> System Online
+                    </button>
+                </div>
+            </header>
+
+            <!-- Dynamic Views -->
+            <div class="content-wrapper">
+                
+                <!-- View: Dashboard -->
+                <div id="view-dashboard" class="view active-view">
+                    <div class="page-header">
+                        <div>
+                            <h1>Overview</h1>
+                            <p class="text-muted">Real-time fraud analytics and system performance.</p>
+                        </div>
+                        <div class="date-range">
+                            <i class="fa-regular fa-calendar"></i> Last 24 Hours <i class="fa-solid fa-chevron-down ml-2"></i>
+                        </div>
+                    </div>
+
+                    <!-- KPI Cards -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card glass-panel">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Total Processed</span>
+                                <div class="kpi-icon bg-blue"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                            </div>
+                            <div class="kpi-value text-neon">24,592</div>
+                            <div class="kpi-trend positive"><i class="fa-solid fa-arrow-trend-up"></i> +12.5% vs yesterday</div>
+                        </div>
+                        <div class="kpi-card glass-panel">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Fraud Prevented</span>
+                                <div class="kpi-icon bg-red"><i class="fa-solid fa-shield-virus"></i></div>
+                            </div>
+                            <div class="kpi-value text-danger">₹1.2M</div>
+                            <div class="kpi-trend positive"><i class="fa-solid fa-arrow-trend-up"></i> 342 transactions stopped</div>
+                        </div>
+                        <div class="kpi-card glass-panel">
+                            <div class="kpi-header">
+                                <span class="kpi-title">Model Accuracy</span>
+                                <div class="kpi-icon bg-purple"><i class="fa-solid fa-brain"></i></div>
+                            </div>
+                            <div class="kpi-value text-primary">99.8%</div>
+                            <div class="kpi-trend neutral"><i class="fa-solid fa-minus"></i> Random Forest Ensemble</div>
+                        </div>
+                        <div class="kpi-card glass-panel">
+                            <div class="kpi-header">
+                                <span class="kpi-title">API Latency</span>
+                                <div class="kpi-icon bg-green"><i class="fa-solid fa-stopwatch"></i></div>
+                            </div>
+                            <div class="kpi-value text-success">42ms</div>
+                            <div class="kpi-trend positive"><i class="fa-solid fa-arrow-trend-down"></i> -5ms improvement</div>
+                        </div>
+                    </div>
+
+                    <!-- Charts & Tables -->
+                    <div class="dashboard-grid mt-4">
+                        <div class="chart-container glass-panel">
+                            <div class="panel-header">
+                                <h3>Transaction Volume (API Requests)</h3>
+                            </div>
+                            <!-- Pure CSS mock chart -->
+                            <div class="css-chart-area">
+                                <div class="chart-y-axis">
+                                    <span>5k</span><span>4k</span><span>3k</span><span>2k</span><span>1k</span><span>0</span>
+                                </div>
+                                <div class="chart-bars">
+                                    <div class="c-bar" style="height: 40%"></div>
+                                    <div class="c-bar" style="height: 60%"></div>
+                                    <div class="c-bar" style="height: 30%"></div>
+                                    <div class="c-bar" style="height: 80%"></div>
+                                    <div class="c-bar alert-bar" style="height: 95%"><div class="fraud-segment" style="height:20%"></div></div>
+                                    <div class="c-bar" style="height: 50%"></div>
+                                    <div class="c-bar" style="height: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="chart-x-axis">
+                                <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+                            </div>
+                        </div>
+
+                        <div class="recent-tx glass-panel">
+                            <div class="panel-header">
+                                <h3>Latest API Predictions</h3>
+                                <a href="#" class="text-primary text-sm">View All</a>
+                            </div>
+                            <div class="tx-list">
+                                <div class="tx-row">
+                                    <div class="tx-status status-safe"><i class="fa-solid fa-check"></i></div>
+                                    <div class="tx-info">
+                                        <div class="tx-id">TXN-8921A</div>
+                                        <div class="tx-time">Just now</div>
+                                    </div>
+                                    <div class="tx-amount">₹4,500.00</div>
+                                    <div class="tx-score text-success">98% Safe</div>
+                                </div>
+                                <div class="tx-row">
+                                    <div class="tx-status status-danger"><i class="fa-solid fa-xmark"></i></div>
+                                    <div class="tx-info">
+                                        <div class="tx-id">TXN-4492X</div>
+                                        <div class="tx-time">2 mins ago</div>
+                                    </div>
+                                    <div class="tx-amount">₹1,25,000.00</div>
+                                    <div class="tx-score text-danger">94% Fraud</div>
+                                </div>
+                                <div class="tx-row">
+                                    <div class="tx-status status-safe"><i class="fa-solid fa-check"></i></div>
+                                    <div class="tx-info">
+                                        <div class="tx-id">TXN-1002B</div>
+                                        <div class="tx-time">5 mins ago</div>
+                                    </div>
+                                    <div class="tx-amount">₹850.00</div>
+                                    <div class="tx-score text-success">99% Safe</div>
+                                </div>
+                                <div class="tx-row">
+                                    <div class="tx-status status-warning"><i class="fa-solid fa-exclamation"></i></div>
+                                    <div class="tx-info">
+                                        <div class="tx-id">TXN-7731Y</div>
+                                        <div class="tx-time">12 mins ago</div>
+                                    </div>
+                                    <div class="tx-amount">₹45,000.00</div>
+                                    <div class="tx-score text-warning">65% Review</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View: ML Scanner (Manual Input) -->
+                <div id="view-scanner" class="view hidden">
+                    <div class="page-header">
+                        <div>
+                            <h1>ML Decision Engine</h1>
+                            <p class="text-muted">Manually test the Random Forest model with custom parameters.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="scanner-layout">
+                        <div class="glass-panel form-panel">
+                            <h3>Transaction Parameters</h3>
+                            <form id="manual-scan-form">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Amount (₹)</label>
+                                        <input type="number" id="scan-amount" value="5000" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Distance from Home (km)</label>
+                                        <input type="number" id="scan-dist" value="12" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Merchant Category</label>
+                                        <select>
+                                            <option>Retail & E-commerce</option>
+                                            <option>Travel & Airlines</option>
+                                            <option>Electronics</option>
+                                            <option>Crypto Exchange</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Velocity (Txns past 24h)</label>
+                                        <input type="number" id="scan-velocity" value="2" required>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-primary w-100 mt-4">Run Inference Engine</button>
+                            </form>
+                        </div>
+
+                        <div class="glass-panel result-panel flex-center" id="scan-result-container">
+                            <div class="idle-state text-center">
+                                <i class="fa-solid fa-microchip icon-huge text-muted"></i>
+                                <h3>Engine Ready</h3>
+                                <p class="text-muted">Awaiting parameters for inference.</p>
+                            </div>
+                            
+                            <!-- Inserted by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View: API Access -->
+                <div id="view-api" class="view hidden">
+                    <div class="page-header">
+                        <div>
+                            <h1>API Integration</h1>
+                            <p class="text-muted">Connect your application to SentinelAI's real-time inference engine.</p>
+                        </div>
+                        <button class="btn-primary"><i class="fa-solid fa-key"></i> Generate New Key</button>
+                    </div>
+
+                    <div class="api-grid mt-4">
+                        <div class="glass-panel key-panel">
+                            <h3>Your API Keys</h3>
+                            <div class="api-key-box mt-3">
+                                <div class="key-name">Production Key (Default)</div>
+                                <div class="key-value-wrap">
+                                    <input type="password" value="sk_live_98a7sd98f7asdf87as9d8f7" readonly id="api-key-prod">
+                                    <button class="btn-icon" onclick="togglePassword('api-key-prod')"><i class="fa-regular fa-eye"></i></button>
+                                    <button class="btn-icon"><i class="fa-regular fa-copy"></i></button>
+                                </div>
+                            </div>
+                            <div class="api-key-box mt-3">
+                                <div class="key-name">Test Key (Sandbox)</div>
+                                <div class="key-value-wrap">
+                                    <input type="text" value="sk_test_12b3cd45e6f7g8h9i0jKA" readonly>
+                                    <button class="btn-icon"><i class="fa-regular fa-copy"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel docs-panel">
+                            <div class="docs-header">
+                                <h3>cURL Request Example</h3>
+                                <div class="lang-tabs">
+                                    <span class="active">cURL</span>
+                                    <span>Python (Requests)</span>
+                                    <span>Node.js (Axios)</span>
+                                </div>
+                            </div>
+                            <pre class="code-block"><code>curl -X POST https://api.sentinel.ai/v1/predict \
+  -H "Authorization: Bearer sk_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 5000,
+    "currency": "INR",
+    "distance_km": 12,
+    "merchant_category": "retail",
+    "tx_velocity_24h": 2
+  }'</code></pre>
+                            <div class="docs-response mt-3">
+                                <h4>Response Payload</h4>
+                                <pre class="code-block json"><code>{
+  "id": "pred_a8f93j2",
+  "status": "success",
+  "prediction": "genuine",
+  "probability_score": 0.985,
+  "risk_level": "low",
+  "processing_time_ms": 42
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View: Subscription -->
+                <div id="view-billing" class="view hidden">
+                    <div class="page-header text-center w-100">
+                        <h1 class="mx-auto">Upgrade to SentinelAI <span class="text-neon">PRO</span></h1>
+                        <p class="text-muted mx-auto">Scale your fraud detection as your business grows.</p>
+                    </div>
+
+                    <div class="pricing-grid mt-5">
+                        <div class="price-card glass-panel">
+                            <h3>Starter API</h3>
+                            <div class="price">Free</div>
+                            <p class="text-muted">Perfect for hackathons & testing</p>
+                            <ul class="features-list">
+                                <li><i class="fa-solid fa-check text-primary"></i> 1,000 API calls/month</li>
+                                <li><i class="fa-solid fa-check text-primary"></i> Basic ML Pipeline</li>
+                                <li><i class="fa-solid fa-check text-primary"></i> Community Support</li>
+                                <li><i class="fa-solid fa-xmark text-muted"></i> Webhooks & Dashboard</li>
+                            </ul>
+                            <button class="btn-secondary w-100 mt-4">Current Plan</button>
+                        </div>
+                        <div class="price-card glass-panel premium-card">
+                            <div class="badge-popular">Most Popular</div>
+                            <h3>Growth SaaS</h3>
+                            <div class="price">₹4,999<span>/mo</span></div>
+                            <p class="text-muted">For growing startups & platforms</p>
+                            <ul class="features-list">
+                                <li><i class="fa-solid fa-check text-primary"></i> 100,000 API calls/month</li>
+                                <li><i class="fa-solid fa-check text-primary"></i> Advanced Random Forest</li>
+                                <li><i class="fa-solid fa-check text-primary"></i> Real-time Webhooks</li>
+                                <li><i class="fa-solid fa-check text-primary"></i> Full Analytics Dashboard</li>
+                            </ul>
+                            <button class="btn-primary w-100 mt-4">Upgrade to Growth</button>
+                        </div>
+                        <div class="price-card glass-panel">
+                            <h3>Enterprise</h3>
+                            <div class="price">Custom</div>
+                            <p class="text-muted">For banks and large gateways</p>
+                            <ul class="features-list">
+                                <li><i class="fa-solid fa-check text-primary"></i> Unlimited API calls</li>
+                                <li><i class="fa-solid fa-check text-primary"></i> Deep Learning Models</li>
+                                <li><i class="fa-solid fa-check text-primary"></i> Dedicated Account Manager</li>
+                                <li><i class="fa-solid fa-check text-primary"></i> SLA 99.99% Uptime</li>
+                            </ul>
+                            <button class="btn-secondary w-100 mt-4">Contact Sales</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
