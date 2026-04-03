@@ -12,20 +12,21 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="dark-app showing-auth">
+<body class="dark-app">
 
     <div class="bg-orb orb-primary"></div>
     <div class="bg-orb orb-secondary"></div>
 
-    <!-- Authentication Overlay -->
-    <div id="auth-screen" class="auth-screen">
+    <!-- Floating Authentication Modal -->
+    <div id="auth-modal" class="auth-modal hidden">
         <div class="auth-card">
+            <button id="btn-close-modal" class="btn-icon btn-close-modal"><i data-lucide="x" class="icon-md"></i></button>
             <div class="auth-card-top">
                 <div class="logo-box">
                     <i data-lucide="shield-check" class="icon-brand"></i>
                 </div>
                 <h2 id="auth-title">Log in to SecurePay-AI</h2>
-                <p class="text-secondary" id="auth-subtitle">Welcome back! Please enter your details.</p>
+                <p class="text-secondary" id="auth-subtitle">Unlock advanced analytics and real-time alerts.</p>
                 <div class="auth-tabs">
                     <button class="auth-tab active" id="tab-login" type="button">Login</button>
                     <button class="auth-tab" id="tab-signup" type="button">Sign Up</button>
@@ -42,14 +43,97 @@
                     <label>Work Email</label>
                     <input type="email" id="inp-email" placeholder="admin@enterprise.com" required>
                 </div>
-                <div class="input-set">
+                <div class="input-set" id="field-pwd">
                     <label>Password</label>
                     <input type="password" id="inp-pwd" placeholder="••••••••" required>
+                    <div class="text-right mt-1">
+                        <a href="#" class="text-xs text-neon reset-pwd-link">Forgot Password?</a>
+                    </div>
                 </div>
                 <button type="submit" class="btn-primary w-full mt-2" id="btn-auth-submit">
-                    <span class="btn-text" id="auth-btn-text">Authenticate</span>
+                    <span class="btn-text" id="auth-btn-text">Log In</span>
                     <i data-lucide="arrow-right" class="icon-sm btn-icon-right"></i>
                 </button>
+                
+                <button type="button" class="btn-outline w-full mt-4" id="btn-guest">
+                    Continue as Guest
+                </button>
+                
+                <div style="display: flex; align-items: center; justify-content: center; margin: 1.5rem 0;">
+                    <hr style="flex: 1; border: none; border-top: 1px solid var(--border-subtle);">
+                    <span style="padding: 0 10px; font-size: 12px; color: var(--text-secondary); font-weight: 600;">OR</span>
+                    <hr style="flex: 1; border: none; border-top: 1px solid var(--border-subtle);">
+                </div>
+
+                <button type="button" class="btn-outline w-full" id="btn-google" style="margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center; gap: 10px; background: rgba(255,255,255,0.03);">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" style="width: 18px; height: 18px; filter: drop-shadow(0 0 2px rgba(255,255,255,0.2));">
+                    <span style="font-weight: 500;">Continue with Google</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quick Scan Modal -->
+    <div id="quick-scan-modal" class="auth-modal hidden" style="backdrop-filter: blur(10px); z-index: 100;">
+        <div class="auth-card glass-panel relative mx-auto mt-20 p-8 rounded-xl" style="width: 400px; max-width: 90vw;">
+            <button class="btn-icon absolute top-4 right-4" id="btn-close-scan"><i data-lucide="x" class="icon-sm text-secondary hover-neon"></i></button>
+            <div class="text-center mb-6">
+                <i data-lucide="shield-check" class="icon-lg text-neon mx-auto mb-2" style="filter: drop-shadow(0 0 10px rgba(6,182,212,0.4));"></i>
+                <h2 style="font-size: 1.5rem; font-weight: 700;">Quick Fraud Check</h2>
+                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">Manual transaction analysis</p>
+            </div>
+            
+            <div id="scan-form-view">
+                <div class="input-set mb-4" style="text-align: left;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px;">Amount (₹)</label>
+                    <input type="number" id="scan-amt" placeholder="e.g. 45000" style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.75rem; color: white;" required>
+                </div>
+                <div class="input-set mb-6" style="text-align: left;">
+                    <label style="display: block; font-size: 12px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px;">Location</label>
+                    <input type="text" id="scan-loc" placeholder="e.g. Mumbai, IN" style="width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 0.75rem; color: white;" required>
+                </div>
+                <button type="button" class="btn-primary w-full" id="btn-run-check" style="margin-top: 1rem;">Check Fraud Risk</button>
+            </div>
+            
+            <div id="scan-result-view" class="hidden text-center mt-4">
+                <div id="scan-spinner" class="hidden" style="margin-bottom: 1rem;">
+                    <i data-lucide="loader" class="icon-lg text-neon mx-auto animate-spin" style="animation: spin 1s linear infinite;"></i>
+                </div>
+                <div id="scan-done" class="hidden" style="margin-top: 1rem;">
+                    <h2 id="scan-output-risk" style="font-size: 3rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 0.25rem;">89%</h2>
+                    <p style="font-size: 10px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.5rem;">Calculated Risk Score</p>
+                    
+                    <div id="scan-reason-box" style="padding: 1rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; text-align: left;">
+                        <span id="scan-reason-badge" style="font-size: 11px; font-weight: 700; color: var(--brand-danger); background: rgba(239, 68, 68, 0.15); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 8px;">HIGH RISK</span>
+                        <p id="scan-reason-text" style="font-size: 13px; font-weight: 500; color: var(--text-primary); margin: 0;">Reason: High amount + unusual location</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Complete Profile Modal (Phase 2 Signup) -->
+    <div id="complete-profile-modal" class="auth-modal hidden" style="backdrop-filter: blur(20px); z-index: 200;">
+        <div class="auth-card glass-panel p-8 mx-auto mt-20 rounded-xl" style="width: 400px; max-width: 90vw;">
+            <div class="text-center mb-6">
+                <i data-lucide="user-check" class="icon-lg text-neon mx-auto mb-2"></i>
+                <h2 style="font-size: 1.5rem; font-weight: 700;">Complete Account</h2>
+                <p class="text-secondary" style="font-size: 0.85rem;">Verification successful! Choose your password.</p>
+            </div>
+            <form id="complete-profile-form">
+                <div class="input-set mb-4">
+                    <label>Full Name</label>
+                    <input type="text" id="final-name" placeholder="Aniket Singh" required>
+                </div>
+                <div class="input-set mb-6">
+                    <label>Choose Password</label>
+                    <input type="password" id="final-pwd" placeholder="••••••••" minlength="6" required>
+                </div>
+                <button type="submit" class="btn-primary w-full" id="btn-final-signup">Finish Account Setup</button>
             </form>
         </div>
     </div>
@@ -59,7 +143,7 @@
         <!-- Topnav -->
         <nav class="top-nav">
             <div class="nav-left">
-                <i data-lucide="menu" class="icon-md md-menu-btn" style="display:none; cursor:pointer;" id="mobile-menu"></i>
+                <button class="btn-icon" id="sidebar-toggle"><i data-lucide="menu" class="icon-md cursor-pointer hover-neon"></i></button>
                 <div class="nav-brand">
                     <i data-lucide="hexagon" class="icon-brand-sm"></i> SecurePay<span class="text-neon">-AI</span>
                 </div>
@@ -73,17 +157,21 @@
             </div>
             <div class="nav-right">
                 <button class="btn-primary btn-sm mx-2" id="btn-quick-scan">
-                    <i data-lucide="scan-line" class="icon-sm mr-2"></i> Run Fraud Scan
+                    <i data-lucide="scan-line" class="icon-sm mr-2"></i> Quick Scan
                 </button>
-                <button class="btn-icon bell-btn mr-2"><i data-lucide="bell" class="icon-sm"></i><span class="dot-red"></span></button>
+                <div class="relative bell-btn mr-2 cursor-pointer" id="nav-alerts-trigger">
+                    <i data-lucide="bell" class="icon-md hover-neon"></i>
+                    <span class="dot-red"></span>
+                </div>
                 
                 <div class="profile-wrap relative" id="profile-trigger">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=06b6d4&color=fff" class="user-avatar" id="avatar-img">
+                    <img src="https://ui-avatars.com/api/?name=Guest&background=06b6d4&color=fff" class="user-avatar" id="avatar-img">
                     <div class="profile-dropdown" id="profile-dropdown">
                         <a href="#" class="view-switch" data-target="billing"><i data-lucide="credit-card"></i> Billing & Plan</a>
-                        <a href="#" class="view-switch" data-target="api"><i data-lucide="key"></i> API Keys</a>
+                        <a href="#" class="view-switch locked-link" data-target="api"><i data-lucide="key"></i> API Keys</a>
                         <hr>
-                        <a href="#" id="btn-logout" class="text-danger"><i data-lucide="log-out"></i> Logout</a>
+                        <a href="#" id="btn-login-drop" class="text-neon"><i data-lucide="log-in"></i> Log In</a>
+                        <a href="#" id="btn-logout" class="text-danger hidden"><i data-lucide="log-out"></i> Logout</a>
                     </div>
                 </div>
             </div>
@@ -93,31 +181,36 @@
             <!-- Sidebar -->
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-group">
-                    <div class="sidebar-label text-neon">Overview</div>
+                    <div class="sidebar-label text-neon"><span class="label-text">Overview</span></div>
                     <a class="side-link active" data-view="dashboard">
-                        <i data-lucide="layout-dashboard" class="icon-sm"></i> Dashboard
+                        <i data-lucide="layout-dashboard" class="icon-sm"></i> <span class="link-text">Dashboard</span>
                     </a>
-                    <a class="side-link" data-view="billing">
-                        <i data-lucide="credit-card" class="icon-sm"></i> Subscription Plan
-                    </a>
-                </div>
-                <div class="sidebar-group">
-                    <div class="sidebar-label text-neon">Machine Learning</div>
                     <a class="side-link" data-view="inference">
-                        <i data-lucide="cpu" class="icon-sm"></i> ML Engine
+                        <i data-lucide="shield-alert" class="icon-sm"></i> <span class="link-text">Fraud Detection</span>
                     </a>
-                    <a class="side-link" data-view="rules">
-                        <i data-lucide="list-filter" class="icon-sm"></i> Custom Rules
+                    <a class="side-link locked-link" data-view="analytics" title="Login Required">
+                        <i data-lucide="bar-chart-2" class="icon-sm"></i> <span class="link-text">Analytics</span> <i data-lucide="lock" class="icon-xs ml-auto text-secondary lock-icon"></i>
                     </a>
                 </div>
                 <div class="sidebar-group">
-                    <div class="sidebar-label text-neon">Developers</div>
-                    <a class="side-link" data-view="simulator">
-                        <i data-lucide="credit-card" class="icon-sm"></i> Payment Simulator
+                    <div class="sidebar-label text-neon"><span class="label-text">System</span></div>
+                    <a class="side-link locked-link" data-view="alerts" title="Login Required">
+                        <i data-lucide="bell" class="icon-sm"></i> <span class="link-text">Alerts</span> <i data-lucide="lock" class="icon-xs ml-auto text-secondary lock-icon"></i>
                     </a>
-                    <a class="side-link" data-view="api">
-                        <i data-lucide="key" class="icon-sm"></i> API Integration
+                    <a class="side-link locked-link" data-view="api" title="Login Required">
+                        <i data-lucide="terminal" class="icon-sm"></i> <span class="link-text">API Access</span> <i data-lucide="lock" class="icon-xs ml-auto text-secondary lock-icon"></i>
                     </a>
+                    <a class="side-link action-settings">
+                        <i data-lucide="settings" class="icon-sm"></i> <span class="link-text">Settings</span>
+                    </a>
+                </div>
+                
+                <div class="sidebar-promo mt-auto promo-container">
+                    <div class="panel-card promo-card p-4">
+                        <div class="text-sm font-semibold mb-2">Unlock Enterprise Pro</div>
+                        <p class="text-xs text-secondary mb-3">Get advanced XAI reports and unlimited API scans.</p>
+                        <button class="btn-primary btn-sm w-full view-switch" data-target="billing">Upgrade Plan</button>
+                    </div>
                 </div>
             </aside>
 
@@ -127,172 +220,221 @@
                 <!-- View: Dashboard -->
                 <div id="view-dashboard" class="view active-view">
                     <header class="view-header">
-                        <h1>Live Analytics <span class="badge badge-success ml-2">LIVE 🔥</span></h1>
+                        <h1>Command Center <span class="badge badge-success ml-2">LIVE 🔥</span></h1>
                     </header>
                     
-                    <div class="dash-grid">
-                        <div class="dash-left">
-                            <div class="metrics-row">
-                                <div class="metric-card">
-                                    <div class="m-card-top">
-                                        <span class="m-label">Transactions Scanned</span>
-                                        <i data-lucide="activity" class="icon-sm text-secondary"></i>
-                                    </div>
-                                    <div class="m-value text-neon counter" data-target="2450892">0</div>
-                                    <div class="m-trend text-success"><i data-lucide="arrow-up-right" class="icon-xs"></i> 14% this week</div>
+                    <!-- 4 Key Stats -->
+                    <div class="metrics-row layout-4">
+                        <div class="metric-card glass-panel">
+                            <div class="m-card-top">
+                                <span class="m-label">Total Transactions</span>
+                                <i data-lucide="activity" class="icon-sm text-secondary"></i>
+                            </div>
+                            <div class="m-value counter" data-target="3824901">0</div>
+                            <div class="m-trend text-success"><i data-lucide="trending-up" class="icon-xs"></i> 12% this week</div>
+                        </div>
+                        <div class="metric-card glass-panel">
+                            <div class="m-card-top">
+                                <span class="m-label">Fraud Detected</span>
+                                <i data-lucide="shield-off" class="icon-sm text-secondary"></i>
+                            </div>
+                            <div class="m-value counter text-danger prefix" data-target="1245000" data-prefix="₹">0</div>
+                            <div class="m-trend text-danger"><i data-lucide="alert-circle" class="icon-xs"></i> High Risk Period</div>
+                        </div>
+                        <div class="metric-card glass-panel">
+                            <div class="m-card-top">
+                                <span class="m-label">Accuracy Rate</span>
+                                <i data-lucide="target" class="icon-sm text-secondary"></i>
+                            </div>
+                            <div class="m-value text-neon">99.8%</div>
+                            <div class="m-trend text-success"><i data-lucide="check-circle" class="icon-xs"></i> ML Model Stable</div>
+                        </div>
+                        <div class="metric-card glass-panel">
+                            <div class="m-card-top">
+                                <span class="m-label">Global Risk Score</span>
+                                <i data-lucide="radio" class="icon-sm text-secondary"></i>
+                            </div>
+                            <div class="m-value text-warning" id="global-risk-text">14%</div>
+                            <div class="m-trend text-warning"><i data-lucide="info" class="icon-xs"></i> Elevated</div>
+                        </div>
+                    </div>
+
+                    <div class="dash-grid layout-2-1 mt-6">
+                        <!-- Left Column -->
+                        <div class="dash-left flex-col gap-6">
+                            <div class="panel-card glass-panel">
+                                <div class="panel-header">
+                                    <h3 class="panel-title">Transaction Volume (24h)</h3>
                                 </div>
-                                <div class="metric-card">
-                                    <div class="m-card-top">
-                                        <span class="m-label">Total Fraud Blocked</span>
-                                        <i data-lucide="shield-alert" class="icon-sm text-secondary"></i>
-                                    </div>
-                                    <div class="m-value counter prefix" data-target="1542000" data-prefix="₹">0</div>
-                                    <div class="m-trend text-success"><i data-lucide="shield-check" class="icon-xs"></i> 4,021 cards protected</div>
-                                </div>
-                                <div class="metric-card ai-insights">
-                                    <div class="m-card-top">
-                                        <span class="m-label text-neon"><i data-lucide="sparkles" class="icon-sm"></i> AI Insight</span>
-                                    </div>
-                                    <div class="m-value mt-2">"Fraud attempts spiked by 12% in the last 2 hours. Mostly origin IP: RU & CN."</div>
+                                <div class="chart-wrapper p-4" style="height: 280px;">
+                                    <canvas id="timeSeriesChart"></canvas>
                                 </div>
                             </div>
-
-                            <div class="panel-card main-chart-container">
+                            
+                            <div class="panel-card glass-panel">
                                 <div class="panel-header">
-                                    <h3 class="panel-title">Real-Time Transaction Flow</h3>
+                                    <h3 class="panel-title">Recent Transactions</h3>
                                 </div>
-                                <div class="chart-wrapper">
-                                    <canvas id="liveChart"></canvas>
+                                <div class="table-wrap">
+                                    <table class="txn-table w-full text-left" id="live-txn-table">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Amount (₹)</th>
+                                                <th>Location</th>
+                                                <th>Time</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Injected via JS -->
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="dash-right">
-                            <div class="panel-card mb-4">
-                                <div class="panel-header"><h3 class="panel-title">Current Risk Score</h3></div>
-                                <div class="gauge-container">
+                        <!-- Right Column -->
+                        <div class="dash-right flex-col gap-6">
+                            <div class="panel-card glass-panel">
+                                <div class="panel-header"><h3 class="panel-title">Fraud Risk Gauge</h3></div>
+                                <div class="gauge-container p-6">
                                     <div class="gauge-arc">
                                         <div class="gauge-fill" id="risk-gauge"></div>
                                     </div>
-                                    <div class="gauge-val" id="risk-val">12%</div>
-                                    <p class="text-secondary text-center text-sm mt-2">Overall platform threat level is low.</p>
+                                    <div class="gauge-val" id="risk-val">14%</div>
+                                    <p class="text-secondary text-center text-sm mt-4">Current network anomaly level</p>
                                 </div>
                             </div>
 
-                            <div class="panel-card">
+                            <div class="panel-card glass-panel">
                                 <div class="panel-header">
-                                    <h3 class="panel-title"><i data-lucide="radio" class="icon-sm text-danger animate-pulse"></i> Live Alerts</h3>
+                                    <h3 class="panel-title">Distribution Overview</h3>
                                 </div>
-                                <div class="live-alerts" id="alerts-box">
-                                    <!-- Populated dynamically via JS -->
+                                <div class="chart-wrapper p-4" style="height: 220px;">
+                                    <canvas id="pieChart"></canvas>
+                                </div>
+                            </div>
+                            
+                            <div class="panel-card glass-panel ai-insights p-6">
+                                <div class="m-card-top mb-2">
+                                    <span class="m-label text-neon"><i data-lucide="sparkles" class="icon-sm"></i> SecurePay-AI Insights</span>
+                                </div>
+                                <div class="text-sm font-medium" style="line-height: 1.6;">
+                                    "Algorithm detects a 4% anomaly shift from IP ranges in Eastern Europe. Recommend tightening distance velocity rules."
+                                </div>
+                                <button class="btn-outline btn-sm w-full mt-4 view-switch locked-link" data-target="alerts">View Threat Report</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Alerts Feed (Point 4) -->
+                    <div class="panel-card glass-panel mt-6">
+                        <div class="panel-header">
+                            <h3 class="panel-title"><i data-lucide="bell-ring" class="icon-sm mr-2 text-warning"></i> Recent System Threats</h3>
+                            <span class="badge badge-warning">LIVE UPDATES</span>
+                        </div>
+                        <div class="p-4">
+                            <div id="dashboard-alerts-feed" class="flex-col gap-3">
+                                <div class="alert-mini p-3 rounded-lg border-subtle bg-black-40 flex items-center justify-between" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; border-radius: 8px; font-weight: 500;">
+                                    <span class="text-sm">⚠️ Suspicious transaction ₹45,000 detected from unknown IP</span>
+                                    <span class="text-xs text-secondary">Just now</span>
+                                </div>
+                                <div class="alert-mini p-3 mt-2 rounded-lg border-subtle bg-black-40 flex items-center justify-between" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; border-radius: 8px; font-weight: 500;">
+                                    <span class="text-sm">⚠️ Unusual login attempt from Singapore VPN</span>
+                                    <span class="text-xs text-secondary">2 mins ago</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- View: Custom Rules Engine -->
-                <div id="view-rules" class="view hidden">
-                    <header class="view-header"><h1>Custom Rules Engine</h1></header>
-                    <p class="text-secondary mb-6">Create explicit business logic rules that run before the ML model executes.</p>
-                    
-                    <div class="panel-card mb-6 p-6" style="padding: 2rem;">
-                        <div class="rule-item">
-                            <div class="rule-logic">
-                                <b>IF</b> 
-                                <select><option>Transaction Amount</option><option>Distance (km)</option></select> 
-                                <b>></b> 
-                                <input type="number" value="50000"> 
-                                <b>THEN</b>
-                            </div>
-                            <div class="badge badge-warning">FLAG FOR REVIEW</div>
+                
+                <!-- View: Analytics (Locked) -->
+                <div id="view-analytics" class="view hidden">
+                    <header class="view-header"><h1>Deep Analytics</h1></header>
+                    <div class="panel-card glass-panel mt-6">
+                        <div class="panel-header border-b">
+                            <h3 class="panel-title">Monthly Fraud Incidents</h3>
                         </div>
-                        <div class="rule-item">
-                            <div class="rule-logic">
-                                <b>IF</b> 
-                                <select><option>Merchant Category</option></select> 
-                                <b>==</b> 
-                                <select><option>Crypto Exchange</option></select> 
-                                <b>THEN</b>
-                            </div>
-                            <div class="badge badge-danger">BLOCK</div>
+                        <div class="chart-wrapper p-6" style="height: 350px;">
+                            <canvas id="barChart"></canvas>
                         </div>
-                        <button class="btn-outline mt-2"><i data-lucide="plus"></i> Add New Rule</button>
                     </div>
                 </div>
 
-                <!-- View: API & Usage -->
+                <!-- View: Alerts (Locked) -->
+                <div id="view-alerts" class="view hidden">
+                    <header class="view-header"><h1>Real-Time Alerts</h1></header>
+                    <div class="panel-card glass-panel mt-6">
+                        <div class="live-alerts p-6" id="alerts-box">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View: API & Usage (Locked) -->
                 <div id="view-api" class="view hidden">
-                    <header class="view-header"><h1>API Access & Usage</h1></header>
-                    <div class="dash-grid mt-6">
-                        <div class="panel-card p-6" style="padding: 1.5rem;">
-                            <h3>Your Secret Keys</h3>
-                            <div class="mt-4 p-4" style="background: rgba(0,0,0,0.3); border-radius: 8px;">
-                                <div class="text-secondary mb-1">Production</div>
-                                <code class="text-primary blur-token">sk_live_2938472983748923</code>
+                    <header class="view-header"><h1>API Access & Limits</h1></header>
+                    <div class="dash-grid mt-6 gap-6">
+                        <div class="panel-card glass-panel p-6">
+                            <h3>Secret Keys</h3>
+                            <div class="mt-4 p-4 blur-bg rounded-lg border-subtle">
+                                <div class="text-secondary mb-1 text-sm">Production Key</div>
+                                <div class="flex items-center gap-4">
+                                    <code class="text-neon tracking-wider">sk_live_2938472983748923</code>
+                                    <button class="btn-icon"><i data-lucide="copy" class="icon-sm"></i></button>
+                                </div>
                             </div>
                         </div>
-                        <div class="panel-card p-6" style="padding: 1.5rem;">
-                            <h3>API Usage (Free Tier)</h3>
+                        <div class="panel-card glass-panel p-6">
+                            <h3>API Usage (Current Billing Cycle)</h3>
                             <div class="mt-4">
-                                <div class="flex justify-between text-sm mb-1" style="display:flex; justify-content:space-between;">
-                                    <span>Requests this month</span>
-                                    <span class="text-neon">8,420 / 10,000</span>
+                                <div class="flex justify-between text-sm mb-2">
+                                    <span>Requests Processed</span>
+                                    <span class="text-neon font-bold">18,420 / 50,000</span>
                                 </div>
-                                <div class="usage-bar-wrap"><div class="usage-bar-fill" style="width: 84%;"></div></div>
+                                <div class="usage-bar-wrap w-full"><div class="usage-bar-fill" style="width: 36%;"></div></div>
+                                <p class="text-xs text-secondary mt-3">Resets in 12 days.</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- View: Payment Gateway Simulator -->
-                <div id="view-simulator" class="view hidden">
-                    <header class="view-header"><h1>💳 Payment Simulation <span class="badge badge-warning ml-2">TEST MODE</span></h1></header>
-                    <p class="text-secondary mb-6">Experience the live Fraud Detection API protecting a checkout flow in real-time.</p>
+                <!-- View: Inference Engine (Scanner) -->
+                <div id="view-inference" class="view hidden">
+                    <header class="view-header">
+                        <h1>Fraud Detection Engine <span class="badge badge-warning ml-2">SIMULATOR</span></h1>
+                    </header>
+                    <p class="text-secondary mb-6">Test the SecurePay-AI Deep Learning models with payload simulation and see Explainable AI (XAI) output.</p>
                     
-                    <div class="dash-grid mt-6">
-                        <div class="panel-card" style="padding: 2rem;">
-                            <h3>Simulate Transaction</h3>
-                            <form id="sim-form" class="mt-4">
-                                <div class="input-set">
-                                    <label>Cardholder Name</label>
-                                    <input type="text" id="sim-name" value="Aniket Sir" required>
-                                </div>
-                                <div class="input-set">
-                                    <label>Card Number</label>
-                                    <input type="text" value="4111 1111 1111 1111" required>
-                                </div>
-                                <div style="display:flex; gap:1rem;">
-                                    <div class="input-set" style="flex:1;">
-                                        <label>CVV</label>
-                                        <input type="text" value="123" required>
-                                    </div>
-                                    <div class="input-set" style="flex:1;">
-                                        <label>Amount (₹)</label>
-                                        <input type="number" id="sim-amt" value="500000" required>
-                                    </div>
-                                </div>
-                                <div class="input-set">
-                                    <label>Location (City, Country)</label>
-                                    <input type="text" id="sim-loc" value="Moscow, RU" required>
-                                </div>
-                                <button type="submit" class="btn-primary w-full mt-2" id="btn-pay-sim">Pay Securely</button>
-                            </form>
-                        </div>
-                        <div class="panel-card" style="padding: 2rem;">
-                            <h3>Explainable AI (XAI) Output</h3>
-                            <p class="text-secondary text-sm mb-4">Real-time inference logs will appear here after payment attempt.</p>
-                            <div id="sim-loading" class="hidden text-center mt-6" style="padding: 2rem;">
-                                <i data-lucide="loader" class="icon-lg animate-pulse" style="margin:auto; display:block; color:var(--brand-cyan);"></i>
-                                <p class="mt-4 text-neon">Analyzing hundreds of data points...</p>
+                    <div class="inference-layout dash-grid gap-6 mt-6 layout-1-1">
+                        <div class="panel-card glass-panel">
+                            <div class="panel-header border-b"><h3>Transaction Payload JSON</h3></div>
+                            <div class="p-6">
+                                <textarea id="json-input" class="w-full font-mono text-sm rounded-lg" style="background:rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1); color:#7ee787; padding:1.25rem; height:250px;">{
+  "amount": 4500.00,
+  "currency": "USD",
+  "distance_km": 1150.5,
+  "device_fingerprint": "new_device_uuid",
+  "merchant_category": "crypto_exchange",
+  "origin_ip": "185.20.x.x"
+}</textarea>
+                                <button class="btn-primary w-full mt-4" id="btn-run-inference"><i data-lucide="play" class="icon-sm mr-2"></i> Execute XAI Scan</button>
                             </div>
-                            <div id="sim-result" class="hidden p-4 mt-2" style="background: rgba(0,0,0,0.5); border-radius:12px; border:1px solid #333;">
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-                                    <div class="text-secondary">Risk Score: <span id="xai-score" class="font-bold text-neon" style="font-size:24px;">0</span>/100</div>
-                                    <div id="xai-action" class="badge">PENDING</div>
+                        </div>
+                        <div class="panel-card glass-panel">
+                            <div class="panel-header border-b"><h3>Explainable AI (XAI) Output</h3></div>
+                            <div id="inference-empty" class="p-10 text-center text-secondary">Awaiting Execution...</div>
+                            <div id="inference-loading" class="hidden p-10 text-center"><i data-lucide="loader" class="icon-lg animate-spin text-neon mx-auto block mb-4"></i> Analyzing payload features...</div>
+                            <div id="inference-result" class="hidden p-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h1 class="text-4xl text-danger font-bold flex items-center gap-3">
+                                        <span id="r-score">92</span><span class="text-lg text-secondary">/100 Risk</span>
+                                    </h1>
+                                    <h3 id="r-action" class="badge badge-danger text-lg px-4 py-1">BLOCK</h3>
                                 </div>
-                                <h4 class="text-secondary mb-2 text-sm uppercase tracking-wider">XAI Reasoning:</h4>
-                                <div id="xai-reasons" class="text-sm font-mono" style="color:#a78bfa; line-height: 1.6;"></div>
+                                <div class="text-sm font-semibold mb-2 text-secondary uppercase tracking-wider">Reasoning Array:</div>
+                                <pre id="r-json" class="font-mono text-xs rounded-lg whitespace-pre-wrap" style="background:rgba(0,0,0,0.4); padding:1rem; border:1px solid rgba(139, 92, 246, 0.3); color:#a78bfa; line-height:1.6;"></pre>
                             </div>
                         </div>
                     </div>
@@ -300,73 +442,44 @@
 
                 <!-- View: Pricing / Billing -->
                 <div id="view-billing" class="view hidden">
-                    <header class="view-header text-center" style="display:block;">
-                        <h1>Upgrade to <span class="text-neon">PRO</span></h1>
-                        <p class="text-secondary mx-auto mt-2">Scale your startup's fraud detection capabilities.</p>
+                    <header class="view-header text-center block mb-8">
+                        <h1 class="text-4xl mx-auto text-center" style="display: block; width: 100%;">Scale your Security</h1>
+                        <p class="text-secondary mx-auto mt-2 text-center" style="display: block; width: 100%;">Choose a plan that fits your startup's volume.</p>
                     </header>
                     
                     <div class="pricing-grid mt-6">
-                        <div class="price-card">
-                            <h3>Starter API</h3>
+                        <div class="price-card glass-panel">
+                            <h3>Developer</h3>
                             <div class="price-amt">Free</div>
                             <p class="text-secondary">Perfect for testing</p>
-                            <ul>
-                                <li><i data-lucide="check"></i> 10,000 API calls/mo</li>
-                                <li><i data-lucide="check"></i> Basic ML Pipeline</li>
-                                <li><i data-x" class="text-secondary"></i> Custom Rules Engine</li>
+                            <ul class="my-6">
+                                <li><i data-lucide="check" class="text-success"></i> 10,000 API calls/mo</li>
+                                <li><i data-lucide="check" class="text-success"></i> Basic ML Pipeline</li>
+                                <li><i data-lucide="x" class="text-secondary"></i> XAI Reasoning</li>
                             </ul>
                             <button class="btn-outline w-full mt-4">Current Plan</button>
                         </div>
-                        <div class="price-card pro">
-                            <h3>Growth SaaS</h3>
-                            <div class="price-amt text-neon">₹4,999<span style="font-size:14px;color:#888">/mo</span></div>
+                        <div class="price-card pro glass-panel">
+                            <h3>Pro SaaS</h3>
+                            <div class="price-amt text-neon">₹19,999<span class="text-sm text-secondary">/mo</span></div>
                             <p class="text-secondary">For scaling platforms</p>
-                            <ul>
-                                <li><i data-lucide="check"></i> 250,000 API calls/mo</li>
-                                <li><i data-lucide="check"></i> Deep Learning Models</li>
-                                <li><i data-lucide="check"></i> Custom Rules Engine</li>
+                            <ul class="my-6">
+                                <li><i data-lucide="check" class="text-success"></i> 250,000 API calls/mo</li>
+                                <li><i data-lucide="check" class="text-success"></i> Deep Learning Models</li>
+                                <li><i data-lucide="check" class="text-success"></i> Explainable AI (XAI)</li>
                             </ul>
                             <button class="btn-primary w-full mt-4">Upgrade Now</button>
                         </div>
-                        <div class="price-card">
+                        <div class="price-card glass-panel">
                             <h3>Enterprise Gateway</h3>
                             <div class="price-amt">Custom</div>
                             <p class="text-secondary">For banks & gateways</p>
-                            <ul>
-                                <li><i data-lucide="check"></i> Unlimited Volume</li>
-                                <li><i data-lucide="check"></i> Dedicated SLA</li>
-                                <li><i data-lucide="check"></i> On-premise Options</li>
+                            <ul class="my-6">
+                                <li><i data-lucide="check" class="text-success"></i> Unlimited Volume</li>
+                                <li><i data-lucide="check" class="text-success"></i> Dedicated SLA</li>
+                                <li><i data-lucide="check" class="text-success"></i> On-premise Nodes</li>
                             </ul>
                             <button class="btn-outline w-full mt-4">Contact Sales</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- View: Inference Engine (Scanner) -->
-                <div id="view-inference" class="view hidden">
-                    <header class="view-header"><h1>ML Inference Engine</h1></header>
-                    <div class="inference-layout mt-6">
-                        <div class="panel-card">
-                            <div class="panel-header border-b"><h3>JSON Form</h3></div>
-                            <div class="p-6" style="padding:1.5rem;">
-                                <textarea id="json-input" class="w-full" style="background:#0a0a0a; border:1px solid #333; color:#7ee787; padding:1rem; height:200px; font-family:monospace;">{
-  "amount": 45000,
-  "currency": "INR",
-  "distance_km": 12.5,
-  "merchant_category": "retail"
-}</textarea>
-                                <button class="btn-primary w-full mt-4" id="btn-run-inference">Execute ML Scan</button>
-                            </div>
-                        </div>
-                        <div class="panel-card">
-                            <div class="panel-header border-b"><h3>Output</h3></div>
-                            <div id="inference-empty" style="padding:3rem; text-align:center;">Awaiting Execution</div>
-                            <div id="inference-loading" class="hidden" style="padding:3rem; text-align:center;"><i data-lucide="loader" class="icon-lg animate-spin" style="margin:auto; display:block;"></i></div>
-                            <div id="inference-result" class="hidden p-6" style="padding:1.5rem;">
-                                <h1 id="r-score" class="text-neon" style="font-size:3rem;">99</h1>
-                                <h3 id="r-action" class="text-danger mt-2">BLOCK</h3>
-                                <pre id="r-json" style="background:#000; padding:1rem; margin-top:1rem; color:#8b5cf6; font-size:12px;"></pre>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -374,6 +487,9 @@
             </main>
         </div>
     </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
