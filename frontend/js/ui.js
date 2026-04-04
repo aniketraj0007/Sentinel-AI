@@ -120,6 +120,10 @@ async function switchView(target) {
             initHistory();
         }
 
+        if (target === 'analytics') {
+            initAnalytics();
+        }
+
         // Run counters if present
         const counters = document.querySelectorAll('.counter');
         counters.forEach(c => animateValue(c, 0, parseInt(c.getAttribute('data-target'), 10), 2000));
@@ -938,3 +942,58 @@ window.simulateInvoiceDownload = function(txnId) {
         showToast(`Invoice ${txnId}.pdf downloaded successfully! ✅`, "success");
     }, 1500);
 };
+
+// --- Deep Analytics Logic ---
+function initAnalytics() {
+    // 1. Initialize all charts
+    if (window.charts && window.charts.initCharts) {
+        window.charts.initCharts();
+    }
+
+    // 2. Populate Activity Feed
+    const feed = document.getElementById('activity-feed-list');
+    if (feed) {
+        const activities = [
+            { amount: '₹45,000', loc: 'Delhi, India', risk: 'High', time: '2 mins ago', icon: 'zap' },
+            { amount: '₹1,20,500', loc: 'California, USA', risk: 'Critical', time: '15 mins ago', icon: 'shield-alert' },
+            { amount: '₹8,200', loc: 'London, UK', risk: 'Medium', time: '34 mins ago', icon: 'info' },
+            { amount: '₹55,000', loc: 'Mumbai, India', risk: 'High', time: '1 hour ago', icon: 'zap' },
+            { amount: '₹12,000', loc: 'Dubai, UAE', risk: 'Low', time: '3 hours ago', icon: 'check-circle' }
+        ];
+
+        feed.innerHTML = activities.map(item => `
+            <div class="activity-item p-4 flex items-center justify-between border-b border-white/5 last:border-0 hover:bg-white/5 transition-all">
+                <div class="flex items-center gap-4">
+                    <div class="p-2 rounded-lg bg-white/5 border border-white/10">
+                        <i data-lucide="${item.icon}" class="icon-sm ${item.risk === 'Critical' || item.risk === 'High' ? 'text-danger' : 'text-neon-cyan'}"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold text-white">${item.amount} <span class="text-xs text-secondary font-normal ml-2">— ${item.loc}</span></div>
+                        <div class="text-[10px] text-secondary mt-0.5">Risk: <span class="${item.risk === 'Critical' || item.risk === 'High' ? 'text-danger' : 'text-success'} font-bold">${item.risk}</span></div>
+                    </div>
+                </div>
+                <div class="text-[10px] text-secondary uppercase font-bold tracking-tighter">${item.time}</div>
+            </div>
+        `).join('');
+    }
+
+    // 3. Populate AI Insights
+    const insightsPanel = document.getElementById('ai-insights-panel');
+    if (insightsPanel) {
+        const insights = [
+            'Fraud volume increased by 12% in the last 24 hours.',
+            'Unused activity patterns detected during night hours (2AM-4AM).',
+            'High-risk transactions predominantly originating from offshore locations.',
+            'Avg transaction value for flagged fraud: 2.5x normal average.'
+        ];
+
+        insightsPanel.innerHTML = insights.map(text => `
+            <div class="insight-item mb-4 last:mb-0">
+                <p class="text-xs text-secondary leading-relaxed">${text}</p>
+            </div>
+        `).join('');
+    }
+
+    // 4. Re-initialize Lucide icons for new content
+    if (window.lucide) window.lucide.createIcons();
+}

@@ -1,10 +1,156 @@
 <!-- views/analytics.html -->
-<header class="view-header"><h1>Deep Analytics</h1></header>
-<div class="panel-card glass-panel mt-6">
-    <div class="panel-header border-b">
-        <h3 class="panel-title">Monthly Fraud Incidents</h3>
+<div class="view-header">
+    <div class="vh-left">
+        <h1 class="text-neon">Deep Analytics</h1>
+        <p class="text-secondary text-sm">Advanced fraud intelligence and real-time risk pattern analysis.</p>
     </div>
-    <div class="chart-wrapper p-6" style="height: 350px;">
-        <canvas id="barChart"></canvas>
+    <div class="vh-right flex gap-3">
+        <div class="p-2 bg-white/5 rounded-lg border border-white/10 flex items-center gap-2">
+            <i data-lucide="calendar" class="icon-xs text-secondary"></i>
+            <span class="text-xs font-medium text-white">Last 30 Days</span>
+        </div>
+        <button class="btn-outline btn-xs px-3" onclick="showToast('Refreshing Analytics...', 'info')"><i data-lucide="refresh-cw" class="icon-xs mr-2"></i> Sync</button>
     </div>
 </div>
+
+<div class="analytics-container mt-6 space-y-6">
+    <!-- 🔥 1. Top Stats Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="settings-card animate-fade-in">
+            <h4 class="text-secondary text-[10px] uppercase font-bold tracking-widest mb-1">Total Transactions</h4>
+            <div class="text-2xl font-bold text-white counter" data-target="12450">0</div>
+            <div class="text-[10px] text-success mt-1"><i data-lucide="trending-up" class="icon-xs inline mr-1"></i> +12.5%</div>
+        </div>
+        <div class="settings-card animate-fade-in" style="animation-delay: 0.1s;">
+            <h4 class="text-secondary text-[10px] uppercase font-bold tracking-widest mb-1">Fraud Detected</h4>
+            <div class="text-2xl font-bold text-white counter" data-target="1245">0</div>
+            <div class="text-[10px] text-danger mt-1"><i data-lucide="alert-triangle" class="icon-xs inline mr-1"></i> Critical</div>
+        </div>
+        <div class="settings-card animate-fade-in" style="animation-delay: 0.2s;">
+            <h4 class="text-secondary text-[10px] uppercase font-bold tracking-widest mb-1">Fraud Rate</h4>
+            <div class="text-2xl font-bold text-white"><span class="counter" data-target="10">0</span>%</div>
+            <div class="text-[10px] text-secondary mt-1">Platform Average</div>
+        </div>
+        <div class="settings-card animate-fade-in" style="animation-delay: 0.3s;">
+            <h4 class="text-secondary text-[10px] uppercase font-bold tracking-widest mb-1">Avg Risk Score</h4>
+            <div class="text-2xl font-bold text-white"><span class="counter" data-target="42">0</span>%</div>
+            <div class="text-[10px] text-warning mt-1">Medium Risk</div>
+        </div>
+    </div>
+
+    <!-- 📊 2. Monthly Fraud Chart (Main) -->
+    <div class="panel-card glass-panel animate-fade-in" style="animation-delay: 0.4s;">
+        <div class="panel-header border-b flex justify-between items-center p-5">
+            <h3 class="panel-title text-sm font-bold uppercase tracking-widest text-white">Monthly Fraud Incidents 📈</h3>
+            <div class="flex gap-2">
+                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                <span class="text-[10px] text-secondary">Incidents</span>
+            </div>
+        </div>
+        <div class="chart-wrapper p-6" style="height: 320px;">
+            <canvas id="monthlyFraudChart"></canvas>
+        </div>
+    </div>
+
+    <!-- 🥧 3 & 4. Pie & Risk Analysis row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="panel-card glass-panel animate-fade-in" style="animation-delay: 0.5s;">
+            <div class="panel-header border-b p-5">
+                <h3 class="panel-title text-xs font-bold uppercase tracking-widest text-white">Fraud vs Genuine</h3>
+            </div>
+            <div class="chart-wrapper p-6 flex items-center justify-center" style="height: 280px;">
+                <canvas id="pieFraudGenuine"></canvas>
+            </div>
+        </div>
+        <div class="panel-card glass-panel animate-fade-in" style="animation-delay: 0.6s;">
+            <div class="panel-header border-b p-5">
+                <h3 class="panel-title text-xs font-bold uppercase tracking-widest text-white">Risk Distribution</h3>
+            </div>
+            <div class="chart-wrapper p-6" style="height: 280px;">
+                <canvas id="riskDistChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🌍 5 & 6. Location & Time row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="panel-card glass-panel animate-fade-in" style="animation-delay: 0.7s;">
+            <div class="panel-header border-b p-5">
+                <h3 class="panel-title text-xs font-bold uppercase tracking-widest text-white">Location Analysis</h3>
+            </div>
+            <div class="chart-wrapper p-6" style="height: 280px;">
+                <canvas id="locationBarChart"></canvas>
+            </div>
+        </div>
+        <div class="panel-card glass-panel animate-fade-in" style="animation-delay: 0.8s;">
+            <div class="panel-header border-b p-5">
+                <h3 class="panel-title text-xs font-bold uppercase tracking-widest text-white">Time-of-Day Analysis ⏰</h3>
+            </div>
+            <div class="chart-wrapper p-6" style="height: 280px;">
+                <canvas id="timeAnalysisChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔔 7 & 🧠 8. Feed & AI row -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Live Feed -->
+        <div class="lg:col-span-2 panel-card glass-panel animate-fade-in" style="animation-delay: 0.9s;">
+            <div class="panel-header border-b p-5 flex justify-between items-center">
+                <h3 class="panel-title text-xs font-bold uppercase tracking-widest text-white">Recent Activity Feed 🔥</h3>
+                <span class="pulse-emerald"></span>
+            </div>
+            <div class="p-0 max-h-[350px] overflow-y-auto custom-scrollbar">
+                <div id="activity-feed-list" class="divide-y divide-white/5">
+                    <!-- Dynamic Activity Items -->
+                </div>
+            </div>
+        </div>
+        <!-- AI Insights -->
+        <div class="panel-card glass-panel animate-fade-in overflow-hidden border-neon-cyan/20" style="animation-delay: 1s;">
+            <div class="panel-header bg-cyan-500/5 p-5 flex items-center gap-2">
+                <i data-lucide="sparkles" class="text-neon-cyan icon-sm"></i>
+                <h3 class="panel-title text-xs font-bold uppercase tracking-widest text-white">AI Insights 🧠</h3>
+            </div>
+            <div class="p-6 space-y-4" id="ai-insights-panel">
+                <!-- Dynamic AI Insights -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.chart-wrapper canvas {
+    filter: drop-shadow(0 0 10px rgba(0,255,255,0.05));
+}
+.pulse-emerald {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+    animation: pulseFeed 1.5s infinite;
+}
+@keyframes pulseFeed {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+.insight-item {
+    padding: 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border-left: 2px solid #06b6d4;
+    transition: all 0.3s ease;
+}
+.insight-item:hover {
+    background: rgba(255,255,255,0.05);
+    transform: translateX(4px);
+}
+.activity-item {
+    transition: background 0.3s ease;
+}
+.activity-item:hover {
+    background: rgba(255,255,255,0.03);
+}
+</style>
