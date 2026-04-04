@@ -1,0 +1,90 @@
+<!-- views/profile.html -->
+<div class="view-header">
+    <div class="vh-left">
+        <h1 class="text-neon">Profile Settings</h1>
+        <p class="text-secondary text-sm">Fine-tune your identity and workspace preferences.</p>
+    </div>
+</div>
+
+<div class="profile-container-inner">
+    <!-- Top Summary Card (PRO LOOK) -->
+    <div class="profile-card summary-card animate-fade-in">
+        <div class="avatar-section">
+            <div class="avatar-wrapper" id="profile-trigger-upgraded">
+                <img id="profile-preview" src="https://ui-avatars.com/api/?name=Aniket+Singh&background=06b6d4&color=fff" alt="Avatar">
+            </div>
+            <div class="edit-overlay" id="btn-edit-photo">
+                <i data-lucide="edit-3" class="icon-xs"></i>
+            </div>
+            <input type="file" id="avatar-input" class="hidden" accept="image/*">
+        </div>
+        <h2 class="summary-name" id="summary-display-name">Aniket Singh</h2>
+        <p class="summary-email" id="summary-display-email">aniket@gmail.com</p>
+        <div class="summary-plan">
+            <i data-lucide="rocket" class="icon-xs"></i>
+            <span id="summary-display-plan">Free Plan</span>
+        </div>
+    </div>
+
+    <form id="profile-form">
+        <!-- 👤 SECTION 1: Personal Information -->
+        <div class="profile-card">
+            <h3 class="section-title"><i data-lucide="user"></i> Personal Information</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Name -->
+                <div class="profile-input-group">
+                    <label for="prof-name">Full Name</label>
+                    <div class="input-with-icon">
+                        <i data-lucide="user"></i>
+                        <input type="text" id="prof-name" placeholder="Aniket Singh" class="profile-input" required>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="profile-input-group">
+                    <label for="prof-email">Email Address</label>
+                    <div class="input-with-icon">
+                        <i data-lucide="mail"></i>
+                        <input type="email" id="prof-email" placeholder="aniket@gmail.com" class="profile-input" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 💼 SECTION 2: Company Information -->
+        <div class="profile-card">
+            <h3 class="section-title"><i data-lucide="briefcase"></i> Company Information</h3>
+            
+            <div class="profile-input-group">
+                <label for="prof-company">Company Name</label>
+                <div class="input-with-icon">
+                    <i data-lucide="building-2"></i>
+                    <input type="text" id="prof-company" placeholder="SecurePay-AI" class="profile-input">
+                </div>
+            </div>
+        </div>
+
+        <!-- 💳 SECTION 3: Subscription & Plan -->
+        <div class="profile-card">
+            <h3 class="section-title"><i data-lucide="credit-card"></i> Subscription & Plan</h3>
+            
+            <div class="plan-info-pill">
+                <div class="plan-details">
+                    <p class="text-secondary text-xs uppercase font-bold tracking-widest mb-1">Current Plan</p>
+                    <p class="text-primary font-bold text-lg">Free Tier <span class="text-secondary font-medium text-sm">(0 / 100 scans)</span></p>
+                </div>
+                <button type="button" class="upgrade-btn">Upgrade to Pro 🚀</button>
+            </div>
+            <p class="text-secondary text-xs mt-4">Upgrade to Pro for unlimited real-time fraud scans and advanced AI insights.</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center justify-center gap-6 mt-8">
+            <button type="button" class="btn-cancel-upgraded" onclick="switchView('dashboard')">Cancel</button>
+            <button type="submit" class="btn-save-upgraded" id="btn-save-profile">
+                <i data-lucide="save"></i> Save Changes
+            </button>
+        </div>
+    </form>
+</div>

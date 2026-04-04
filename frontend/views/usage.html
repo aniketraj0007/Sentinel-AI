@@ -1,0 +1,139 @@
+<!-- views/usage.html -->
+<div class="view-header">
+    <div class="vh-left">
+        <h1 class="text-neon">Usage Analytics</h1>
+        <p class="text-secondary text-sm">Monitor your API consumption, fraud detection efficiency, and plan limits.</p>
+    </div>
+    <div class="vh-right">
+        <div class="p-2 bg-white/5 rounded-lg border border-white/10 flex items-center gap-3">
+            <span class="text-[10px] uppercase font-bold text-secondary">Cycle Ends In:</span>
+            <span class="text-xs font-mono text-neon">22 Days</span>
+        </div>
+    </div>
+</div>
+
+<div class="settings-container-inner">
+    <!-- Top Metrics Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <!-- API Usage Card -->
+        <div class="settings-card animate-fade-in">
+            <div class="flex justify-between items-start mb-4">
+                <div class="card-icon-box" style="color: #6366f1; background: rgba(99, 102, 241, 0.1);"><i data-lucide="terminal"></i></div>
+                <span class="text-[10px] font-bold text-indigo-400 bg-indigo-400/10 px-2 py-1 rounded">API</span>
+            </div>
+            <h4 class="text-secondary text-xs uppercase font-bold mb-1">API Calls Used</h4>
+            <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-2xl font-bold text-white" id="stat-api-used">120</span>
+                <span class="text-sm text-secondary">/ 1000</span>
+            </div>
+            <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-indigo-500 h-full rounded-full transition-all duration-1000" style="width: 12%;"></div>
+            </div>
+        </div>
+
+        <!-- Fraud Scans Card -->
+        <div class="settings-card animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="flex justify-between items-start mb-4">
+                <div class="card-icon-box" style="color: #06b6d4; background: rgba(6, 182, 212, 0.1);"><i data-lucide="shield-check"></i></div>
+                <span class="text-[10px] font-bold text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded">SCANS</span>
+            </div>
+            <h4 class="text-secondary text-xs uppercase font-bold mb-1">Total Fraud Checks</h4>
+            <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-2xl font-bold text-white" id="stat-scans-total">85</span>
+                <span class="text-xs text-success ml-auto"><i data-lucide="trending-up" class="icon-xs inline mr-1"></i> +14%</span>
+            </div>
+            <p class="text-[10px] text-secondary">Detected: <span class="text-danger font-bold">12 Fraudulent</span></p>
+        </div>
+
+        <!-- Monthly Usage Card -->
+        <div class="settings-card animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="flex justify-between items-start mb-4">
+                <div class="card-icon-box" style="color: #a855f7; background: rgba(168, 85, 247, 0.1);"><i data-lucide="activity"></i></div>
+                <span class="text-[10px] font-bold text-purple-400 bg-purple-400/10 px-2 py-1 rounded">QUOTA</span>
+            </div>
+            <h4 class="text-secondary text-xs uppercase font-bold mb-1">Monthly Capacity</h4>
+            <div class="flex items-baseline gap-2 mb-2">
+                <span class="text-2xl font-bold text-white" id="stat-usage-pct">45%</span>
+                <span class="text-sm text-secondary">Consumed</span>
+            </div>
+            <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                <div class="bg-purple-500 h-full rounded-full transition-all duration-1000" style="width: 45%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart Section -->
+    <div class="settings-card animate-fade-in mb-6" style="animation-delay: 0.3s; min-height: 400px;">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h3 class="card-title">Usage over time</h3>
+                <p class="text-xs text-secondary mt-1">Daily analysis of API hits and fraud scan volume.</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="btn-outline btn-xs px-3">7D</button>
+                <button class="btn-outline btn-xs px-3 opacity-50">30D</button>
+            </div>
+        </div>
+        
+        <div class="relative w-full h-[300px]">
+            <canvas id="usageChart"></canvas>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Plan Limits Card -->
+        <div class="settings-card animate-fade-in" style="animation-delay: 0.4s;">
+            <h3 class="card-title mb-6">Current Plan</h3>
+            <div class="p-6 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-2xl border border-white/5 relative overflow-hidden group">
+                <div class="relative z-10">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Free Tier</span>
+                        <span class="text-2xl font-bold text-white">$0<span class="text-xs text-secondary font-normal">/mo</span></span>
+                    </div>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-center gap-2 text-xs text-secondary">
+                            <i data-lucide="check" class="icon-xs text-success"></i> 1,000 API Requests / Month
+                        </li>
+                        <li class="flex items-center gap-2 text-xs text-secondary">
+                            <i data-lucide="check" class="icon-xs text-success"></i> Basic Fraud Patterns
+                        </li>
+                        <li class="flex items-center gap-2 text-xs text-secondary opacity-50">
+                            <i data-lucide="x" class="icon-xs text-danger"></i> Advanced XAI Reports
+                        </li>
+                    </ul>
+                    <button class="btn-primary w-full view-switch" data-target="billing">Upgrade to Pro</button>
+                </div>
+                <!-- Orb effect inside card -->
+                <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-indigo-500/20 blur-3xl rounded-full group-hover:scale-150 transition-transform duration-700"></div>
+            </div>
+        </div>
+
+        <!-- Last Activity Card -->
+        <div class="settings-card animate-fade-in" style="animation-delay: 0.5s;">
+            <h3 class="card-title mb-6">Recent Activity</h3>
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 p-3 bg-white/5 rounded-xl border border-white/5">
+                    <div class="p-2 bg-indigo-500/10 rounded-lg text-indigo-400"><i data-lucide="terminal" class="icon-sm"></i></div>
+                    <div class="flex-1">
+                        <h5 class="text-xs font-bold text-white">API Call: /v1/predict</h5>
+                        <p class="text-[10px] text-secondary">2 minutes ago • IP: 192.168.1.45</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 p-3 bg-white/5 rounded-xl border border-white/5">
+                    <div class="p-2 bg-cyan-500/10 rounded-lg text-cyan-400"><i data-lucide="search" class="icon-sm"></i></div>
+                    <div class="flex-1">
+                        <h5 class="text-xs font-bold text-white">Manual CSV Scan</h5>
+                        <p class="text-[10px] text-secondary">5 minutes ago • 14 records checked</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 p-3 bg-white/5 rounded-xl border border-white/5">
+                    <div class="p-2 bg-purple-500/10 rounded-lg text-purple-400"><i data-lucide="key" class="icon-sm"></i></div>
+                    <div class="flex-1">
+                        <h5 class="text-xs font-bold text-white">API Key Rotated</h5>
+                        <p class="text-[10px] text-secondary">1 hour ago • User: self</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

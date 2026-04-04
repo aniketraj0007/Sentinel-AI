@@ -1,0 +1,125 @@
+<!-- views/settings.html -->
+<div class="view-header">
+    <div class="vh-left">
+        <h1 class="text-neon">App Settings</h1>
+        <p class="text-secondary text-sm">Tailor your SecurePay-AI workspace to your needs.</p>
+    </div>
+</div>
+
+<div class="settings-container-inner">
+    <form id="settings-form">
+        <!-- 🌙 Card 1: Appearance -->
+        <div class="settings-card animate-fade-in">
+            <div class="card-header-flex">
+                <div class="card-icon-box"><i data-lucide="moon"></i></div>
+                <h3 class="card-title">Appearance</h3>
+            </div>
+            
+            <div class="setting-row">
+                <div class="row-info">
+                    <span class="row-title">Dark Mode</span>
+                    <span class="row-desc">Optimize for low-light environments.</span>
+                </div>
+                <label class="premium-toggle">
+                    <input type="checkbox" id="toggle-dark-mode" checked>
+                    <span class="toggle-slider-round"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- 🌍 Card 2: Language -->
+        <div class="settings-card animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="card-header-flex">
+                <div class="card-icon-box" style="color: #6366f1; background: rgba(99, 102, 241, 0.1);"><i data-lucide="languages"></i></div>
+                <h3 class="card-title">Language & Region</h3>
+            </div>
+            
+            <div class="profile-input-group mt-2">
+                <label for="setting-lang">Default Language</label>
+                <select id="setting-lang" class="glass-select">
+                    <option value="en">🇮🇳 English (India)</option>
+                    <option value="en-us">🇺🇸 English (US)</option>
+                    <option value="es">🇪🇸 Spanish (Español)</option>
+                    <option value="hi">🇮🇳 Hindi (हिन्दी)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 🔔 Card 3: Notifications -->
+        <div class="settings-card animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="card-header-flex">
+                <div class="card-icon-box" style="color: #10b981; background: rgba(16, 185, 129, 0.1);"><i data-lucide="bell"></i></div>
+                <h3 class="card-title">Notifications</h3>
+            </div>
+            
+            <div class="setting-row">
+                <div class="row-info">
+                    <span class="row-title">Fraud Alerts</span>
+                    <span class="row-desc">Real-time push notifications for high-risk transactions.</span>
+                </div>
+                <label class="premium-toggle">
+                    <input type="checkbox" id="notif-fraud" checked>
+                    <span class="toggle-slider-round"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="row-info">
+                    <span class="row-title">Email Notifications</span>
+                    <span class="row-desc">Receive weekly analytics and security reports.</span>
+                </div>
+                <label class="premium-toggle">
+                    <input type="checkbox" id="notif-email">
+                    <span class="toggle-slider-round"></span>
+                </label>
+            </div>
+
+            <div class="setting-row">
+                <div class="row-info">
+                    <span class="row-title">Push Notifications</span>
+                    <span class="row-desc">Get system updates directly in your browser.</span>
+                </div>
+                <label class="premium-toggle">
+                    <input type="checkbox" id="notif-push" checked>
+                    <span class="toggle-slider-round"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- ⚙️ Card 4: Preferences -->
+        <div class="settings-card animate-fade-in" style="animation-delay: 0.3s;">
+            <div class="card-header-flex">
+                <div class="card-icon-box" style="color: #f59e0b; background: rgba(245, 158, 11, 0.1);"><i data-lucide="settings"></i></div>
+                <h3 class="card-title">Preferences</h3>
+            </div>
+            
+            <div class="profile-input-group mt-2">
+                <label for="pref-default-view">Default Dashboard View</label>
+                <select id="pref-default-view" class="glass-select">
+                    <option value="summary">Real-time Summary</option>
+                    <option value="analytics">Analytics Deep-dive</option>
+                    <option value="alerts">Activity Log</option>
+                </select>
+            </div>
+
+            <div class="setting-row mt-4">
+                <div class="row-info">
+                    <span class="row-title">Auto Refresh Data</span>
+                    <span class="row-desc">Automatically reload dashboard metrics every 30s.</span>
+                </div>
+                <label class="premium-toggle">
+                    <input type="checkbox" id="pref-auto-refresh" checked>
+                    <span class="toggle-slider-round"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Action Footer -->
+        <div class="settings-footer animate-fade-in" style="animation-delay: 0.4s;">
+            <button type="button" class="btn-cancel-settings" onclick="switchView('dashboard')">Cancel</button>
+            <button type="submit" class="btn-save-settings">
+                <i data-lucide="zap"></i> Save Changes
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,190 @@
+/* css/settings.css - Premium App Settings UI Overhaul */
+
+.settings-container-inner {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    animation: fadeInSlide 0.5s ease-out;
+}
+
+@keyframes fadeInSlide {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 1. Settings Card Design */
+.settings-card {
+    backdrop-filter: blur(14px);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.settings-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(0, 242, 254, 0.2);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.card-header-flex {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+
+.card-icon-box {
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 242, 254, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #00f2fe;
+}
+
+.card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #f8fafc;
+}
+
+/* 2. Premium Toggle Switch */
+.premium-toggle {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.premium-toggle input {
+    opacity: 0; width: 0; height: 0;
+}
+
+.toggle-slider-round {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #1e293b;
+    transition: .4s;
+    border-radius: 34px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.toggle-slider-round:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: #cbd5e1;
+    transition: .4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .toggle-slider-round {
+    background-color: rgba(0, 242, 254, 0.25);
+    border-color: #00f2fe;
+}
+
+input:checked + .toggle-slider-round:before {
+    transform: translateX(24px);
+    background-color: #00f2fe;
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.setting-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.row-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.row-title { font-size: 0.95rem; font-weight: 600; color: #f1f5f9; }
+.row-desc { font-size: 0.8rem; color: #64748b; }
+
+/* 3. Styled Glass Select */
+.glass-select {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px 15px;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+}
+
+.glass-select:focus {
+    outline: none;
+    border-color: #00f2fe;
+    box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+}
+
+/* 4. Action Buttons Footer */
+.settings-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.btn-save-settings {
+    background: linear-gradient(135deg, #00f2fe, #4facfe) !important;
+    color: #020617 !important;
+    padding: 12px 30px !important;
+    border-radius: 50px !important;
+    font-weight: 700 !important;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    box-shadow: 0 10px 20px rgba(0, 242, 254, 0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-save-settings:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 15px 30px rgba(0, 242, 254, 0.4);
+}
+
+.btn-cancel-settings {
+    background: transparent !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+    color: #f8fafc !important;
+    padding: 10px 25px !important;
+    border-radius: 50px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s !important;
+}
+
+.btn-cancel-settings:hover {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: rgba(255,255,255,0.4) !important;
+}

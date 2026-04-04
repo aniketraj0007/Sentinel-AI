@@ -47,16 +47,23 @@ curl -X POST https://api.securepay-ai.com/v1/check-fraud \
     </div>
 
     <div class="dash-right flex-col gap-6">
-        <div class="panel-card glass-panel p-6">
-            <h3>API Keys</h3>
-            <div class="mt-4 p-4 blur-bg rounded-lg border-subtle bg-black-40" style="background: rgba(0,0,0,0.2);">
-                <div class="text-secondary mb-1 text-xs uppercase tracking-wider">Production Key</div>
-                <div class="flex items-center gap-4">
-                    <code class="text-neon tracking-wider text-xs">sk_live_2938472983748923</code>
-                    <button class="btn-icon"><i data-lucide="copy" class="icon-sm"></i></button>
+        <div class="panel-card glass-panel p-6 border-light">
+            <h3 class="mb-4">API Keys</h3>
+            <div class="api-keys-list space-y-4" id="api-keys-container">
+                <div class="p-4 blur-bg rounded-xl border-subtle bg-white/5 relative group">
+                    <div class="text-secondary mb-1 text-[10px] uppercase tracking-widest font-bold">Production Key</div>
+                    <div class="flex items-center justify-between gap-4">
+                        <code class="text-neon tracking-wider text-xs font-mono" id="api-key-live">sk_live_2938472983748923</code>
+                        <div class="flex gap-1">
+                            <button class="btn-icon btn-copy-key" data-target="api-key-live"><i data-lucide="copy" class="icon-sm"></i></button>
+                            <button class="btn-icon text-danger opacity-0 group-hover:opacity-100 transition-all btn-delete-key"><i data-lucide="trash-2" class="icon-sm"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button class="btn-outline w-full mt-4 text-xs">Rotate API Keys</button>
+            <button class="btn-primary w-full mt-4 text-xs font-bold uppercase tracking-widest py-3" id="btn-generate-key">
+                <i data-lucide="plus" class="icon-sm mr-2"></i> Generate New Key
+            </button>
         </div>
 
         <div class="panel-card glass-panel p-6">

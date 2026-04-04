@@ -32,6 +32,20 @@
     --radius-lg: 20px;
 }
 
+[data-theme="light"] {
+    --bg-page: #f8fafc;
+    --bg-panel: #ffffff;
+    --bg-nav: rgba(255, 255, 255, 0.9);
+    
+    --border-light: rgba(168, 85, 247, 0.15);
+    --border-subtle: rgba(0, 0, 0, 0.05);
+    
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    
+    --shadow-float: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {

@@ -24,11 +24,41 @@
     <div class="profile-wrap relative" id="profile-trigger">
         <img src="https://ui-avatars.com/api/?name=Guest&background=06b6d4&color=fff" class="user-avatar" id="avatar-img">
         <div class="profile-dropdown" id="profile-dropdown">
-            <a href="#" class="view-switch" data-target="billing"><i data-lucide="credit-card"></i> Billing & Plan</a>
-            <a href="#" class="view-switch locked-link" data-target="api"><i data-lucide="key"></i> API Keys</a>
-            <hr>
-            <a href="#" id="btn-login-drop" class="text-neon"><i data-lucide="log-in"></i> Log In</a>
-            <a href="#" id="btn-logout" class="text-danger hidden"><i data-lucide="log-out"></i> Logout</a>
+            <!-- Account -->
+            <div class="dropdown-group">
+                <div class="group-label">👤 Account</div>
+                <a href="#" class="menu-item view-switch" data-target="profile"><i data-lucide="user" class="icon-sm"></i> Profile</a>
+                <a href="#" class="menu-item view-switch" data-target="settings"><i data-lucide="settings" class="icon-sm"></i> Settings</a>
+            </div>
+            
+            <!-- Billing -->
+            <div class="dropdown-group">
+                <div class="group-label">💳 Billing</div>
+                <a href="#" class="menu-item view-switch" data-target="billing"><i data-lucide="credit-card" class="icon-sm"></i> Billing & Plan</a>
+                <a href="#" class="menu-item view-switch" data-target="history"><i data-lucide="history" class="icon-sm"></i> Payment History</a>
+            </div>
+
+            <!-- Security -->
+            <div class="dropdown-group">
+                <div class="group-label">🔐 Security</div>
+                <a href="#" class="menu-item view-switch" data-target="password"><i data-lucide="lock" class="icon-sm"></i> Change Password</a>
+                <a href="#" class="menu-item view-switch" data-target="2fa"><i data-lucide="shield-check" class="icon-sm"></i> Two Factor Authentication</a>
+            </div>
+
+            <!-- System -->
+            <div class="dropdown-group">
+                <div class="group-label">⚙️ System</div>
+                <a href="#" class="menu-item view-switch" data-target="api"><i data-lucide="key" class="icon-sm"></i> API Keys</a>
+                <a href="#" class="menu-item view-switch" data-target="usage"><i data-lucide="bar-chart-3" class="icon-sm"></i> Usage Stats</a>
+            </div>
+
+            <hr class="dropdown-divider">
+
+            <!-- Exit -->
+            <div class="dropdown-group">
+                <a href="#" id="btn-login-drop" class="menu-item text-neon"><i data-lucide="log-in" class="icon-sm"></i> Log In</a>
+                <a href="#" id="btn-logout" class="menu-item text-danger hidden"><i data-lucide="log-out" class="icon-sm"></i> Logout</a>
+            </div>
         </div>
     </div>
 </div>

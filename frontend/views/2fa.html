@@ -1,0 +1,110 @@
+<!-- views/2fa.html -->
+<div class="view-header">
+    <div class="vh-left">
+        <h1 class="text-neon">Security & Authentication</h1>
+        <p class="text-secondary text-sm">Add an extra layer of protection using Two-Factor Authentication.</p>
+    </div>
+</div>
+
+<div class="settings-container-inner">
+    <!-- Main 2FA Card -->
+    <div class="settings-card animate-fade-in">
+        <div class="card-header-flex">
+            <div class="card-icon-box" style="color: #06b6d4; background: rgba(6, 182, 212, 0.1);"><i data-lucide="shield-check"></i></div>
+            <h3 class="card-title">Authenticator App</h3>
+        </div>
+        
+        <div class="setting-row">
+            <div class="row-info">
+                <span class="row-title">Enable Two Factor Authentication</span>
+                <span class="row-desc">Status: <span id="2fa-status-text" class="text-danger font-bold">DISABLED</span></span>
+            </div>
+            <label class="premium-toggle">
+                <input type="checkbox" id="toggle-2fa">
+                <span class="toggle-slider-round"></span>
+            </label>
+        </div>
+
+        <!-- 2FA Setup Flow (Hidden by default) -->
+        <div id="2fa-setup-area" class="mt-8 hidden animate-fade-in">
+            <hr class="border-white/5 mb-8">
+            
+            <div class="flex flex-col md:flex-row gap-8 items-center">
+                <!-- QR Code Box -->
+                <div class="qr-setup-box p-4 bg-white rounded-2xl shadow-2xl relative overflow-hidden group">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=otpauth://totp/SecurePayAI:admin@gmail.com?secret=JBSWY3DPEHPK3PXP&issuer=SecurePayAI" 
+                         alt="QR Code" class="w-40 h-40 group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 border-2 border-cyan-500/20 rounded-2xl pointer-events-none group-hover:border-cyan-500/50 transition-colors"></div>
+                    <!-- Scanning Line Effect -->
+                    <div class="qr-scan-line"></div>
+                </div>
+
+                <div class="flex-1 space-y-4">
+                    <h4 class="text-white font-bold mb-1">Scan the QR code</h4>
+                    <p class="text-xs text-secondary leading-relaxed">
+                        Open your authenticator app (Google Authenticator, Authy, etc.) and scan the code. 
+                        If you can't scan, use the setup key below:
+                    </p>
+                    <div class="p-3 bg-slate-900/50 border border-white/5 rounded-xl flex items-center justify-between">
+                        <code class="text-neon text-xs font-mono tracking-widest">JBSW Y3DP EHPK 3PXP</code>
+                        <i data-lucide="copy" class="icon-xs text-secondary cursor-pointer hover:text-white transition-colors"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OTP Verification -->
+            <div class="mt-10 p-6 bg-cyan-500/5 border border-cyan-500/10 rounded-2xl">
+                <label class="block text-xs font-bold text-secondary uppercase tracking-widest mb-4">Enter 6-digit verification code</label>
+                <div class="flex gap-4">
+                    <input type="text" id="otp-input" class="profile-input text-center tracking-[1em] font-bold text-xl" 
+                           placeholder="••••••" maxlength="6" style="padding-left: 1.5rem !important;">
+                    <button class="btn-save-settings" id="btn-verify-2fa" style="margin: 0 !important; width: auto; height: 50px;">
+                        Verify & Activate
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enabled Successfully View (Hidden by default) -->
+        <div id="2fa-enabled-view" class="mt-8 hidden animate-fade-in text-center p-8 bg-emerald-500/5 border border-emerald-500/10 rounded-2xl">
+            <div class="p-4 bg-emerald-500/10 rounded-full inline-block mb-4">
+                <i data-lucide="check-circle" class="text-success icon-lg"></i>
+            </div>
+            <h3 class="text-white font-bold text-lg mb-2">Two Factor Authentication is now active</h3>
+            <p class="text-xs text-secondary mb-6">Your account is now protected with an additional layer of security.</p>
+            
+            <div class="text-left space-y-4">
+                <label class="block text-[10px] text-secondary font-bold uppercase tracking-tighter">Emergency Backup Codes</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="p-2 bg-slate-900/80 border border-white/5 rounded-lg text-xs font-mono text-center text-secondary">A1B2-C3D4</div>
+                    <div class="p-2 bg-slate-900/80 border border-white/5 rounded-lg text-xs font-mono text-center text-secondary">E5F6-G7H8</div>
+                </div>
+                <button class="btn-outline btn-xs w-full mt-2" style="font-size: 10px; opacity: 0.7;"><i data-lucide="download" class="icon-xs mr-2"></i> Download Backup Codes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.qr-scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #06b6d4;
+    box-shadow: 0 0 15px #06b6d4;
+    animation: scanQr 2s linear infinite;
+}
+
+@keyframes scanQr {
+    0% { top: 0; }
+    50% { top: 100%; }
+    100% { top: 0; }
+}
+
+#otp-input::placeholder {
+    color: rgba(255,255,255,0.1);
+    letter-spacing: normal;
+}
+</style>

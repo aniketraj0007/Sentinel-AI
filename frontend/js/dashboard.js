@@ -68,11 +68,13 @@ function initDashboard(charts) {
         // Increment Live Stats smoothly
         if(totalTxnEl) {
             txnTotal += Math.floor(Math.random() * 8) + 1;
-            totalTxnEl.innerText = txnTotal.toLocaleString();
+            const valNum = totalTxnEl.querySelector('.val-num');
+            if (valNum) valNum.innerText = txnTotal.toLocaleString('en-IN');
         }
         if(fraudAmtEl) {
             fraudTotal += Math.floor(Math.random() * 5);
-            fraudAmtEl.innerText = fraudTotal.toLocaleString('en-IN');
+            const valNum = fraudAmtEl.querySelector('.val-num');
+            if (valNum) valNum.innerText = fraudTotal.toLocaleString('en-IN');
         }
 
         // Line chart update
